@@ -15,9 +15,9 @@ runq1: Question1
 clean:
 	rm -f $(OBJFILES) $(TARGET) *~
 
-	// place makefile in the same folder where Question1.c file is and to compile run:
-	//$ make
-	// if you want to run Question1.c then use:
-	//$ make runq1
-	// to clean out the directory then use:
-	//$ make clean
+# place makefile in the same folder where Question1.c file is and to compile run:
+#$ make
+# if you want to run Question1.c then use:
+#$ make runq1
+# to clean out the directory then use:
+#$ make clean
