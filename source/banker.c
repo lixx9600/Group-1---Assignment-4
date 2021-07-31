@@ -5,9 +5,18 @@
 #include <string>
 #include <sys/stat.h>
 #include <stdbool.h>
-
+int m, n;
 void* threadRun(void* t);
-void IsSafe();
+bool IsSafe();
+void show();
+int Request(int index, int rq[]);
+void Release(int index, int rl[]);
+int safe[100] = {0};
+int ava[100] = {0};
+int max[100][100] = {0};
+int allo[100][100] = {0};
+int need[100][100] = {0};
+bool finish[100];
 
 int main(int argc, char* argv[]){
 	if (argc == 0){
