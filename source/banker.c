@@ -24,12 +24,11 @@ int main(int argc, char* argv[]){
 		return -1;
 	}
 
-	int m = argc - 1;
-	int ava[m];
+	m = argc - 1;
+
 	for (int i = 0; i < m; i++){
 		ava[i] = atol(argv[i+1]);
 	}
-
 
 	FILE *in = fopen("sample4_in.txt", "r");
 	struct stat st;
@@ -46,19 +45,18 @@ int main(int argc, char* argv[]){
 
 	char* command = NULL;
 	char* token = NULL;
-	int n = 0;
+	n = 0;
 	char* fcopy = (char*)malloc((strlen(fileContent)+1)*sizeof(char));
-	strcpy(fcopy, fileContent);
+	strcpy(fcopy, fcontent);
 	command = strtok(fcopy, "\r\n");
 	while (command != NULL){
 		n++;
 		command = strtok(NULL, "\r\n");
 	}
-	int max[n][m];
 	char* lines[n];
 	command = NULL;
 	int k = 0;
-	command = strtok(fileContent, "\r\n");
+	command = strtok(fcontent, "\r\n");
 	while (command != NULL){
 		lines[k] = malloc(sizeof(command)*sizeof(char));
 		strcpy(lines[k], command);
@@ -76,16 +74,13 @@ int main(int argc, char* argv[]){
 		}
 	}
 
-	int allo[n][m];
-	int need[n][m];
-
 	for (int i = 0; i < n; i++){
 		for (int j = 0; j < m; j++){
 			allo[i][j] = 0;
 			need[i][j] = max[i][j];
 		}
 	}
-	printf("Number of Customers: %d\n");
+	printf("Number of Customers: %d\n", n);
 	printf("Currently Available resources: ");
 	for (int i = 0; i < m; i++){
 		printf(" %d", ava[i]);
@@ -99,10 +94,55 @@ int main(int argc, char* argv[]){
 		}
 	}
 	printf("\n");
-	char* input;
-	while (true){
+	char input[20];
+	pthread_t workers[n];
+	while (1){
+		int index;
+		int rq[m], rl[m];
 		printf("Enter Command: ");
-		scanf("%s ", &input);
+		scanf("%s", input);
+		if (strcmp(input, "Status") == 0){
+			show();
+		}else if (strcmp(input, "Run") == 0){
+			printf("Safe Sequence is:");
+			IsSafe();
+			for (int i = 0; i < n; i++){
+				printf(" %d", safe[i]);
+			}
+			printf("\n");
+			for (int i = 0; i < n; i++){
+				pthread_create(&workers[i], NULL, threadRun, &safe[i]);
+				sleep(3);
+			}
+			for (int i = 0; i < n; i++){
+				pthread_join(workers[i], NULL);
+			}
+		}else if (strcmp(input, "Exit") == 0){
+			break;
+		}else if (strcmp(input, "RQ") == 0){
+			scanf("%s", input);
+			index = atol(input);
+			for (int i = 0; i < m; i++){
+				scanf("%s", input);
+				rq[i] = atol(input);
+			}
+			Request(index, rq);
+			if (IsSafe() == true){
+				printf("State is safe, and request is satisfied");
+			}else{
+				Release(index, rq);
+			}
+		}else if (strcmp(input, "RL") == 0){
+			scanf("%s", input);
+			index = atol(input);
+			for (int i = 0; i < m; i++){
+				scanf("%s", input);
+				rl[i] = atol(input);
+			}
+			Release(index, rl);
+		}else{
+			printf("Can't read your command, please try again\n");
+		}
 	}
 	return 0;
 }
