@@ -146,3 +146,44 @@ int main(int argc, char* argv[]){
 	}
 	return 0;
 }
+bool IsSafe(){
+	int s = 0;
+	int work[m];
+
+	for (int i = 0; i < m; i++){
+		work[i] = ava[i];
+	}
+	for (int i = 0; i < n; i++){
+		finish[i] = false;
+	}
+	
+	int f = 1;
+	for (int i = 0; i < n; i++){
+		f = 1;
+		if (finish[i] == false){
+			for (int j = 0; j < m; j++){
+				if (need[i][j] > work[j]){
+					f = 0;
+					break;
+				}
+			}
+			if (f == 1){
+				for (int j = 0; j < m; j++){
+					work[j] = work[j] + allo[i][j];
+				}
+				finish[i] = true;
+				safe[s++] = i;
+				i = -1;
+			}
+		}
+	}
+
+	bool flag = true;
+	for (int i = 0; i < n; i++){
+		if (finish[i] == false){
+			flag = false;
+			break;
+		}
+	}
+	return flag;
+}
