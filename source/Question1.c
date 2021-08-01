@@ -189,3 +189,33 @@ bool IsSafe(){
 	}
 	return flag;
 }
+
+
+
+void* threadRun(void* t){
+	int p = *(int *) t;
+	printf("--> Customer/Thread %d\n", p);
+	printf("    Allocated resources:");
+	for (int i = 0; i < m; i++){
+		printf(" %d", allo[p][i]);
+	}
+	printf("\n    Needed:");
+	for (int i = 0; i < m; i++){
+		printf(" %d", need[p][i]);
+	}
+	printf("\n    Available:");
+	for (int i = 0; i < m; i++){
+		printf(" %d", ava[i]);
+	}
+	printf("\n    Thread has started");
+	Request(p, need[p]);
+	printf("\n    Thread has finished");
+	printf("\n    Thread is releasing resources");
+	Release(p, allo[p]);
+	printf("\n    New Available:");
+	for (int i = 0; i < m; i++){
+		printf(" %d", ava[i]);
+	}
+	printf("\n");
+	pthread_exit(0);
+}
