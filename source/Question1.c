@@ -191,6 +191,32 @@ bool IsSafe(){
 }
 
 
+int Request(int index, int rq[]){
+	for (int i = 0; i < m; i++){
+		if (rq[i] > need[index][i]){
+			printf("Thread can not request more than maximum number\n");
+			return -1;
+		}
+	}
+	while (1){
+		bool flag = true;
+		for (int i = 0; i < m; i++){
+			if (rq[i] > ava[i]){
+				flag = false;
+				break;
+			}
+		}
+		if (flag == true){
+			break;
+		}
+	}
+	for (int i = 0; i < m; i++){
+		ava[i] -= rq[i];
+		allo[index][i] += rq[i];
+		need[index][i] -= rq[i];
+	}
+	return 0;
+}
 
 void Release(int index, int rl[]){
 	for (int i = 0; i < m; i++){
