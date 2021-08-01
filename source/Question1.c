@@ -189,7 +189,34 @@ bool IsSafe(){
 	}
 	return flag;
 }
-
+void show(){
+	printf("Available Resources:\n");
+	for (int i = 0; i < m; i++){
+		printf("%d ", ava[i]);
+	}
+	printf("\nMaximum Resources:");
+	for (int i = 0; i < n; i++){
+		printf("\n");
+		for (int j = 0; j < m; j++){
+			printf("%d ", max[i][j]);
+		}
+	}
+	printf("\nAllocated Resources:");
+	for (int i = 0; i < n; i++){
+		printf("\n");
+		for (int j = 0; j < m; j++){
+			printf("%d ", allo[i][j]);
+		}
+	}
+	printf("\nNeed Resources:");
+	for (int i = 0; i < n; i++){
+		printf("\n");
+		for (int j = 0; j < m; j++){
+			printf("%d ", need[i][j]);
+		}
+	}
+	printf("\n");
+}
 
 int Request(int index, int rq[]){
 	for (int i = 0; i < m; i++){
@@ -217,6 +244,7 @@ int Request(int index, int rq[]){
 	}
 	return 0;
 }
+
 
 void Release(int index, int rl[]){
 	for (int i = 0; i < m; i++){
