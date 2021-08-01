@@ -192,6 +192,14 @@ bool IsSafe(){
 
 
 
+void Release(int index, int rl[]){
+	for (int i = 0; i < m; i++){
+		ava[i] += rl[i];
+		allo[index][i] -= rl[i];
+		need[index][i] += rl[i];
+	}
+}
+
 void* threadRun(void* t){
 	int p = *(int *) t;
 	printf("--> Customer/Thread %d\n", p);
