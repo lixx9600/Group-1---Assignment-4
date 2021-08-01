@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <string>
+#include <string.h>
 #include <sys/stat.h>
 #include <stdbool.h>
 int m, n;
@@ -33,12 +33,12 @@ int main(int argc, char* argv[]){
 	FILE *in = fopen("sample4_in.txt", "r");
 	struct stat st;
 	fstat(fileno(in), &st);
-	char* fileContent = (char*)malloc(((int)st.st_size+1)*sizeof(char));
-	fileContent[0] = '\0';
+	char* fcontent = (char*)malloc(((int)st.st_size+1)*sizeof(char));
+	fcontent[0] = '\0';
 	while (!feof(in)){
 		char line[50];
 		if (fgets(line, 50, in) != NULL){
-			strncat(fileContent, line, strlen(line));
+			strncat(fcontent, line, strlen(line));
 		}
 	}
 	fclose(in);
@@ -46,7 +46,7 @@ int main(int argc, char* argv[]){
 	char* command = NULL;
 	char* token = NULL;
 	n = 0;
-	char* fcopy = (char*)malloc((strlen(fileContent)+1)*sizeof(char));
+	char* fcopy = (char*)malloc((strlen(fcontent)+1)*sizeof(char));
 	strcpy(fcopy, fcontent);
 	command = strtok(fcopy, "\r\n");
 	while (command != NULL){
@@ -128,7 +128,7 @@ int main(int argc, char* argv[]){
 			}
 			Request(index, rq);
 			if (IsSafe() == true){
-				printf("State is safe, and request is satisfied");
+				printf("State is safe, and request is satisfied\n");
 			}else{
 				Release(index, rq);
 			}
@@ -146,6 +146,8 @@ int main(int argc, char* argv[]){
 	}
 	return 0;
 }
+
+
 bool IsSafe(){
 	int s = 0;
 	int work[m];
@@ -156,7 +158,7 @@ bool IsSafe(){
 	for (int i = 0; i < n; i++){
 		finish[i] = false;
 	}
-	
+
 	int f = 1;
 	for (int i = 0; i < n; i++){
 		f = 1;
